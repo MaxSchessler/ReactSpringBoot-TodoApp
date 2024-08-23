@@ -34,6 +34,7 @@ public class TodoController {
                     .filter(todo -> !todo.isCompleted())
                     .toList();
 
+
             case "ALL" -> todoRepository.findByUsername(username);
 
             default -> null;
