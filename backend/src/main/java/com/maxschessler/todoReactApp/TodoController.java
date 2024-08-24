@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 public class TodoController {
@@ -77,38 +78,27 @@ public class TodoController {
             @PathVariable Long id,
             @RequestParam(required = false) boolean returnListOfExisting
     ) {
-        Todo existing = todoRepository.findById(id).orElse(null);
-        if (existing == null) {
-            return ResponseEntity.notFound().build();
-        } else if (existing.getUsername().equalsIgnoreCase(username)) {
-            return ResponseEntity.badRequest().build();
-        } else {
-            // delete the record
-            todoRepository.deleteById(id);
+        // get existing record
+        Todo todo = todoRepository.findById(id).orElse(null);
+        if (todo == null) return ResponseEntity.notFound().build();
+        if (!todo.getUsername().equalsIgnoreCase(username)) return ResponseEntity.badRequest().build();
+        todoRepository.deleteById(id);
 
-            // if request param returnListOfExisting - for react state
-            // return list of remaining todos for this user
-            if (returnListOfExisting) {
-                return ResponseEntity.ok(todoRepository.findByUsername(username));
-            }
-
-            // return empty 200 response
-            return ResponseEntity.ok().build();
-        }
+        if (returnListOfExisting) return ResponseEntity.ok(todoRepository.findByUsername(username));
+        else return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/users/{username}/todos{id}")
-    public ResponseEntity<Todo> toggleComplete(
+    @PatchMapping("users/{username}/todos/{id}/toggle")
+    public ResponseEntity<Todo> toggleCompletion(
             @PathVariable String username,
             @PathVariable long id
     ) {
         Todo todo = todoRepository.findById(id).orElse(null);
-        if (todo == null) {
-            return ResponseEntity.notFound().build();
-        }
-        // toggle record
+        if (todo == null) return ResponseEntity.notFound().build();
+
         todo.setCompleted(!todo.isCompleted());
+        todoRepository.save(todo);
+
         return ResponseEntity.ok(todo);
     }
-
 }
