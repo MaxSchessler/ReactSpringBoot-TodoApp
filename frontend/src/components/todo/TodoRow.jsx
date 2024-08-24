@@ -26,7 +26,7 @@ export const TodoRow = ({todo, selected, setSelected, setModal}) => {
             <td>{todoState.id}</td>
             <td>{todoState.description}</td>
             <td><div>
-                <input type={"checkbox"} checked={todoState.done} onChange={() => {
+                <input type={"checkbox"} checked={todoState.completed} onChange={() => {
                     updateTodo(todoState);
                 }}/>
             </div></td>
