@@ -101,4 +101,18 @@ public class TodoController {
 
         return ResponseEntity.ok(todo);
     }
+
+    @PutMapping("users/{username}/todos/{id}")
+    public ResponseEntity<Todo> updateTodo(
+            @PathVariable String username,
+            @PathVariable long id,
+            @RequestBody Todo todo
+    ) {
+        // update todo
+        Todo existingTodo = todoRepository.findById(id).orElse(null);
+        if (existingTodo == null) return ResponseEntity.notFound().build();
+        if (!existingTodo.getUsername().equalsIgnoreCase(username)) return ResponseEntity.badRequest().build();
+        todoRepository.save(todo);
+        return ResponseEntity.ok(todo);
+    }
 }
