@@ -14,29 +14,38 @@ const TodoForm = () => {
 
     const [description, setDescription] = useState("");
     const [targetDate, setTargetDate] = useState(null);
-    const [isDone, setIsDone] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
+
+    const [completed, setCompleted] = useState(false);
+
 
     useEffect(() => {
         const api = new TodoAPIService();
         api.getTodosByUsernameAndID(username, id).then(response => {
             setDescription(response.data.description);
             setTargetDate(response.data.targetDate);
-            setIsDone(response.data.done);
+            setCompleted(response.data.completed);
 
         }).catch(error => {
             console.log(error);
-            setErrorMessage(error.message);
         })
     }, []);
 
     function onFormSubmit(values) {
-
-    }
-
-    function updateTodo() {
         const api = new TodoAPIService();
+        const todo = {
+            id: id,
+            username: username,
+            description: values.description,
+            targetDate: values.targetDate,
+            completed: completed
+        };
 
+        api.updateTodoItem(username, id, todo).then(response => {
+            console.log(response.data);
+            navigate("/todos");
+        }).catch(error => {
+            console.log(error);
+        });
     }
 
     function validateForm(values) {
@@ -64,9 +73,9 @@ const TodoForm = () => {
                 <div className={"container"}>
                     <Formik
                         initialValues={{description, targetDate}}
-                        nableReinitialize={true}
+                        enableReinitialize={true}
                         onSubmit={onFormSubmit}
-                        validate={validateForm}>
+                        validate={validateForm}
                         validateOnBlur={false}
                         validateOnChange={false}>
                         {

@@ -30,4 +30,8 @@ export default class TodoAPIService {
     toggleTodoCompletion(username, id) {
         return this.#apiClient.patch(`users/${username}/todos/${id}/toggle`);
     }
+
+    updateTodoItem(username, id, todo) {
+        return this.#apiClient.put(`users/${username}/todos/${id}`, todo);
+    }
 }

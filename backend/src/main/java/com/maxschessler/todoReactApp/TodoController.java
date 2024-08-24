@@ -34,13 +34,10 @@ public class TodoController {
             case "INCOMPLETE", "NOT COMPLETE" -> todoRepository.findByUsername(username).stream()
                     .filter(todo -> !todo.isCompleted())
                     .toList();
-
-
             case "ALL" -> todoRepository.findByUsername(username);
 
             default -> null;
         };
-
         if (todos == null) { // if request param todoStatus value is not valid
             return ResponseEntity.badRequest().build();
         } else { // if valid: return todos as 200
