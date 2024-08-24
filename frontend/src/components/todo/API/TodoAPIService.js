@@ -11,12 +11,8 @@ export default class TodoAPIService {
         });
     }
 
-    getAllTodos() {
-        return this.#apiClient.get("/todos");
-    }
-
-    getTodosByUsername(username) {
-        return this.#apiClient.get(`/users/${username}/todos`);
+    getTodosByUsername(username, todoStatus="ALL") {
+        return this.#apiClient.get(`/users/${username}/todos`, {params: {todoStatus}});
     }
 
     getTodosByUsernameAndID(username, id) {
@@ -28,10 +24,10 @@ export default class TodoAPIService {
     }
 
     deleteTodoById(username, id, returnListOfTodos) {
-        return this.#apiClient.delete(`/users/${username}/todos/${id}`, {params: {returnListOfTodos}});
+        return this.#apiClient.delete(`/users/${username}/todos/${id}`, {params: {returnListOfExisting: returnListOfTodos}});
     }
 
     toggleTodoCompletion(username, id) {
-        return this.#apiClient.patch(`/users/${username}/todos/${id}`);
+        return this.#apiClient.patch(`users/${username}/todos/${id}/toggle`);
     }
 }

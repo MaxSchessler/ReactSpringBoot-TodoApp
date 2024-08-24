@@ -24,10 +24,10 @@ const ListTodosComponent = () => {
 
     useEffect(() => {
         const api = new TodoAPIService();
-        api.getTodosByUsername(username)
+        api.getTodosByUsername(username, "ALL")
             .then(response => {
                 setTodos(response.data);
-            }).catch(e => console.error(e));
+            }).catch((e) => console.error(e = "\n Error getting todos in ListComponent UseEffect."));
     }, [username]);
 
     return (
