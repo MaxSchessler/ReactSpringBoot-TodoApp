@@ -1,17 +1,14 @@
-package com.maxschessler.todoReactApp;
+package com.maxschessler.todoReactApp.Controllers;
 
 
 import com.maxschessler.todoReactApp.Models.Todo;
 import com.maxschessler.todoReactApp.Repositories.TodoRepository;
-import jakarta.annotation.Nullable;
-import org.apache.coyote.Response;
 import org.springframework.data.jpa.repository.JpaContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 public class TodoController {
