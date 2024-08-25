@@ -7,6 +7,7 @@ import jakarta.annotation.Nullable;
 import org.apache.coyote.Response;
 import org.springframework.data.jpa.repository.JpaContext;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -60,13 +61,14 @@ public class TodoController {
     }
 
     @PostMapping("/users/{username}/todos")
-    public ResponseEntity<Todo> createTodo(
+    public ResponseEntity<Object> createTodo(
             @PathVariable String username,
-            @RequestBody Todo todo
+            @Validated @RequestBody Todo todo
     ) {
         todo.setUsername(username);
-        Todo createdTodo = todoRepository.save(todo);
-        return ResponseEntity.ok(createdTodo);
+        todoRepository.save(todo);
+        System.out.println(todo);
+        return ResponseEntity.ok(todo);
     }
 
     @DeleteMapping("/users/{username}/todos/{id}")

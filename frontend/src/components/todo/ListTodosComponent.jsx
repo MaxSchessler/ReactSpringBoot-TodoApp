@@ -101,8 +101,10 @@ const ListTodosComponent = () => {
                 }
                 </tbody>
             </table>
+            <div className={"btn btn-success m-5"} onClick={() => navigate("/todos/-1")}>Add Mew Todo</div>
         </div>
     );
 }
+
 
 export default ListTodosComponent;

@@ -18,7 +18,7 @@ const TodoForm = () => {
     const [completed, setCompleted] = useState(false);
 
 
-    useEffect(() => {
+    function GetTodoInfo() {
         const api = new TodoAPIService();
         api.getTodosByUsernameAndID(username, id).then(response => {
             setDescription(response.data.description);
@@ -28,6 +28,38 @@ const TodoForm = () => {
         }).catch(error => {
             console.log(error);
         })
+    }
+
+    function updateTodo(api, values, todo) {
+        api.updateTodoItem(username, id, todo).then(response => {
+            console.log(response.data);
+            navigate("/todos");
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+    function postTodo(api, values) {
+        const todo = {
+            username: username,
+            description: values.description,
+            targetDate: values.targetDate,
+            completed: false
+        }
+        console.log(todo);
+        api.postNewTodoItem(username, todo).then(response => {
+            console.log(response.data);
+            navigate("/todos");
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+    useEffect(() => {
+        if (id !== "-1") {
+            GetTodoInfo();
+        }
+
     }, []);
 
     function onFormSubmit(values) {
@@ -40,12 +72,13 @@ const TodoForm = () => {
             completed: completed
         };
 
-        api.updateTodoItem(username, id, todo).then(response => {
-            console.log(response.data);
-            navigate("/todos");
-        }).catch(error => {
-            console.log(error);
-        });
+        if (id === "-1") {
+            postTodo(api, values);
+        } else {
+            updateTodo(api, values, todo);
+        }
+
+
     }
 
     function validateForm(values) {
@@ -69,7 +102,7 @@ const TodoForm = () => {
     return (
         <div>
             <div className="container">
-                <h1>Edit Todo</h1>
+                <h1>{id === "-1" ? "Add Todo" : "Edit Todo"}</h1>
                 <div className={"container"}>
                     <Formik
                         initialValues={{description, targetDate}}
