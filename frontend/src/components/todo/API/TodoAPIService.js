@@ -42,10 +42,10 @@ class TodoAPIService {
         return this.#apiClient.put(`users/${username}/todos/${id}`, todo);
     }
 
-    setupAxiosInterceptors(basicAuthHeader) {
+    setupAxiosInterceptors(jwt) {
         this.#apiClient.interceptors.request.use(
             (config) => {
-                config.headers.Authorization = basicAuthHeader;
+                config.headers.Authorization = jwt;
                 return config;
             }
         );

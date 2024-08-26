@@ -14,8 +14,7 @@ const ListTodosComponent = () => {
 
 
     function deleteTodo(todo) {
-        const api =  TodoAPIService;
-        api.deleteTodoById(username, todo.id, true)
+        TodoAPIService.deleteTodoById(username, todo.id, true)
             .then((response) => {
                 setTodos(response.data);
             }).catch(e => console.error("Error deleting todo in ListTodosComponent deleteTodo: " + e));
@@ -23,8 +22,7 @@ const ListTodosComponent = () => {
 
 
     useEffect(() => {
-        const api = TodoAPIService;
-        api.getTodosByUsername(username, "ALL")
+        TodoAPIService.getTodosByUsername(username, "ALL")
             .then(response => {
                 setTodos(response.data);
             }).catch((e) => console.error(e = "\n Error getting todos in ListComponent UseEffect."));
