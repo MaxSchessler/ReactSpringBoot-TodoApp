@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export default class AuthAPIService{
+class AuthAPIService{
     #API_URL = 'http://localhost:8080';
     #apiClient;
 
@@ -21,4 +21,13 @@ export default class AuthAPIService{
         });
 
     }
+
+    jwtAuthService(username, password) {
+        return this.#apiClient.post("/authenticate", {
+            username,
+            password
+        });
+    }
 }
+
+export default new AuthAPIService();
