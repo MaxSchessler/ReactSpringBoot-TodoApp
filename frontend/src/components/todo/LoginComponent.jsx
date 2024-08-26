@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import "../../styles/TodoApp.css";
-import {authorizationContext, useAuth} from "./security/AuthorizationContext";
+import {useAuth} from "./security/AuthorizationContext";
 
 const Login = (props) => {
     const [username, setUsername] = useState('')
@@ -10,12 +10,11 @@ const Login = (props) => {
     const navigate = useNavigate()
     const authContext = useAuth();
 
-    const onButtonClick = () => {
-        if (authContext.login(username, password)) {
+    const onButtonClick = async () => {
+        if (await authContext.login(username, password)) {
             navigate("/welcome");
         } else {
-            setError('Invalid username or password')
-            setError('Invalid username or password')
+            setError('Invalid username or password');
         }
     }
 

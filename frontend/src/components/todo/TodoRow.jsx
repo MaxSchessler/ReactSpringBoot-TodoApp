@@ -4,14 +4,16 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPenToSquare, faTrash} from "@fortawesome/free-solid-svg-icons";
 import React, {useState} from "react";
 import TodoAPIService from "./API/TodoAPIService";
+import {useAuth} from "./security/AuthorizationContext";
 
 export const TodoRow = ({todo, selected, setSelected, setModal}) => {
     const [todoState, setTodoState] = useState(todo);
     const navigate = useNavigate();
     const targetDate = moment(todo.targetDate).format("ddd, MMM, Do, YYYY");
+    const authContext = useAuth();
 
     function updateTodo(todo) {
-        const api = new TodoAPIService();
+        const api = new TodoAPIService(authContext.token);
         api.toggleTodoCompletion(todo.username, todo.id)
             .then(response => {
                 setTodoState(response.data);

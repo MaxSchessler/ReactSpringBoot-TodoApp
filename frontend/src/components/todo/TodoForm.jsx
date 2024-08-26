@@ -11,7 +11,6 @@ const TodoForm = () => {
     const username = authContext.username;
     const navigate = useNavigate();
     const {id} = useParams();
-
     const [description, setDescription] = useState("");
     const [targetDate, setTargetDate] = useState(null);
 
@@ -19,7 +18,7 @@ const TodoForm = () => {
 
 
     function GetTodoInfo() {
-        const api = new TodoAPIService();
+        const api = new TodoAPIService(authContext.token);
         api.getTodosByUsernameAndID(username, id).then(response => {
             setDescription(response.data.description);
             setTargetDate(response.data.targetDate);
@@ -63,7 +62,7 @@ const TodoForm = () => {
     }, []);
 
     function onFormSubmit(values) {
-        const api = new TodoAPIService();
+        const api = new TodoAPIService(authContext.token);
         const todo = {
             id: id,
             username: username,

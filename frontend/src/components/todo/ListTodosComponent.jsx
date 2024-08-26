@@ -14,16 +14,16 @@ const ListTodosComponent = () => {
 
 
     function deleteTodo(todo) {
-        const api = new TodoAPIService();
+        const api = new TodoAPIService(authContext.token);
         api.deleteTodoById(username, todo.id, true)
             .then((response) => {
                 setTodos(response.data);
-            }).catch(e => console.error(e));
+            }).catch(e => console.error("Error deleting todo in ListTodosComponent deleteTodo: " + e));
     }
 
 
     useEffect(() => {
-        const api = new TodoAPIService();
+        const api = new TodoAPIService(authContext.token);
         api.getTodosByUsername(username, "ALL")
             .then(response => {
                 setTodos(response.data);

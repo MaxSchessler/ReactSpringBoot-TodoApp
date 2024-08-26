@@ -22,9 +22,9 @@ public class TodoReactAppApplication {
 	@Bean
 	public CommandLineRunner loadData(TodoRepository repository) {
 		return (args) ->  {
-			repository.save(new Todo(null, "maxschessler", false, "maxschessler", LocalDate.now().plusDays(1)));
-			repository.save(new Todo(null, "maxschessler", true, "maxschessler", LocalDate.now().plusDays(2)));
-			repository.save(new Todo(null, "maxschessler", false, "maxschessler", LocalDate.now().plusDays(3)));
+			repository.save(new Todo(null, "Learn Spring Security", false, "user", LocalDate.now().plusDays(1)));
+			repository.save(new Todo(null, "Learn Docker", true, "user", LocalDate.now().plusDays(2)));
+			repository.save(new Todo(null, "Deploy Application to AWS", false, "user", LocalDate.now().plusDays(3)));
 		};
 	}
 
