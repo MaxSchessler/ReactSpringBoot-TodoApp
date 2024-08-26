@@ -9,7 +9,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-@Configuration
+//@Configuration
 public class BasicAuthenticationSecurityConfiguration {
 
     // in this file we are going to configure basic authentication
