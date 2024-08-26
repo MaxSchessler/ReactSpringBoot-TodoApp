@@ -14,7 +14,7 @@ const ListTodosComponent = () => {
 
 
     function deleteTodo(todo) {
-        const api = new TodoAPIService(authContext.token);
+        const api =  TodoAPIService;
         api.deleteTodoById(username, todo.id, true)
             .then((response) => {
                 setTodos(response.data);
@@ -23,7 +23,7 @@ const ListTodosComponent = () => {
 
 
     useEffect(() => {
-        const api = new TodoAPIService(authContext.token);
+        const api = TodoAPIService;
         api.getTodosByUsername(username, "ALL")
             .then(response => {
                 setTodos(response.data);

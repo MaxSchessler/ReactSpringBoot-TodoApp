@@ -1,19 +1,13 @@
 import axios from "axios";
 
-export default class TodoAPIService {
+class TodoAPIService {
 
     #API_URL = 'http://localhost:8080';
     #apiClient;
-    #token;
 
-    constructor(token) {
-        this.#token = token;
+    constructor() {
         this.#apiClient = axios.create({
             baseURL: this.#API_URL,
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": this.#token,
-            }
         });
     }
 
@@ -47,4 +41,15 @@ export default class TodoAPIService {
     updateTodoItem(username, id, todo) {
         return this.#apiClient.put(`users/${username}/todos/${id}`, todo);
     }
+
+    setupAxiosInterceptors(basicAuthHeader) {
+        this.#apiClient.interceptors.request.use(
+            (config) => {
+                config.headers.Authorization = basicAuthHeader;
+                return config;
+            }
+        );
+    }
 }
+
+export default TodoAPIService = new TodoAPIService();

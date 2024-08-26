@@ -18,8 +18,7 @@ const TodoForm = () => {
 
 
     function GetTodoInfo() {
-        const api = new TodoAPIService(authContext.token);
-        api.getTodosByUsernameAndID(username, id).then(response => {
+        TodoAPIService.getTodosByUsernameAndID(username, id).then(response => {
             setDescription(response.data.description);
             setTargetDate(response.data.targetDate);
             setCompleted(response.data.completed);
@@ -29,8 +28,8 @@ const TodoForm = () => {
         })
     }
 
-    function updateTodo(api, values, todo) {
-        api.updateTodoItem(username, id, todo).then(response => {
+    function updateTodo(values, todo) {
+        TodoAPIService.updateTodoItem(username, id, todo).then(response => {
             console.log(response.data);
             navigate("/todos");
         }).catch(error => {
@@ -59,10 +58,9 @@ const TodoForm = () => {
             GetTodoInfo();
         }
 
-    }, []);
+    }, [GetTodoInfo, id]);
 
     function onFormSubmit(values) {
-        const api = new TodoAPIService(authContext.token);
         const todo = {
             id: id,
             username: username,
@@ -72,9 +70,9 @@ const TodoForm = () => {
         };
 
         if (id === "-1") {
-            postTodo(api, values);
+            postTodo(TodoAPIService, values);
         } else {
-            updateTodo(api, values, todo);
+            updateTodo(values, todo);
         }
 
 
