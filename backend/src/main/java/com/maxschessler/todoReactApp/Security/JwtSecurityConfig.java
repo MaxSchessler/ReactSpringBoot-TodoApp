@@ -44,32 +44,22 @@ public class JwtSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, HandlerMappingIntrospector introspector) throws Exception {
-
-        // h2-console is a servlet
-        // https://github.com/spring-projects/spring-security/issues/12310
         return httpSecurity
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/authenticate").permitAll()
-                        .requestMatchers(PathRequest.toH2Console()).permitAll() // h2-console is a servlet and NOT recommended for a production
-                        .requestMatchers(HttpMethod.OPTIONS,"/**")
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated())
+                        .requestMatchers("/authenticate").permitAll() // Ensure this line is present
+                        .requestMatchers(PathRequest.toH2Console()).permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.
-                        sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .oauth2ResourceServer(
-                        OAuth2ResourceServerConfigurer::jwt)
-                .httpBasic(
-                        Customizer.withDefaults())
-                .headers(header -> {header.
-                        frameOptions().sameOrigin();})
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+                .httpBasic(Customizer.withDefaults())
+                .headers(header -> header.frameOptions().sameOrigin())
                 .build();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(
-            UserDetailsService userDetailsService) {
+    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService) {
         var authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         return new ProviderManager(authenticationProvider);
@@ -77,8 +67,8 @@ public class JwtSecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        UserDetails user = User.withUsername("in28minutes")
-                .password("{noop}dummy")
+        UserDetails user = User.withUsername("user")
+                .password("{noop}password")
                 .authorities("read")
                 .roles("USER")
                 .build();
